@@ -7,6 +7,8 @@ import path from "path";
 
 // Importing internal models
 import ProductController from "./src/controllers/product.controller.js";
+// import validationMiddleware from "./src/middlewares/validation.middleware.js";
+import validationRequest from "./src/middlewares/validation.middleware.js";
 
 // Creating the server
 const server = express();
@@ -28,7 +30,7 @@ server.use(expressEjsLayouts);
 // Calling the get method
 server.get("/", productController.getProducts);
 server.get("/new", productController.getAddForm);
-server.post("/", productController.addNewProduct);
+server.post("/", validationRequest, productController.addNewProduct);
 
 // Serving the static files
 server.use(express.static("src/views"));
