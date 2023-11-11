@@ -11,6 +11,9 @@ import ProductController from "./src/controllers/product.controller.js";
 // Creating the server
 const server = express();
 
+// Parse form data
+server.use(express.urlencoded({ extended: true }));
+
 // setup view engine settings
 server.set("view engine", "ejs");
 // Informing the view enjine where our views reside in this it's in views and path to the folders
@@ -24,6 +27,8 @@ server.use(expressEjsLayouts);
 
 // Calling the get method
 server.get("/", productController.getProducts);
+server.get("/new", productController.getAddForm);
+server.post("/", productController.addNewProduct);
 
 // Serving the static files
 server.use(express.static("src/views"));
