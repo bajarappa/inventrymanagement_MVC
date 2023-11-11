@@ -1,44 +1,27 @@
-// Importing external models
 import express from "express";
-import expressEjsLayouts from "express-ejs-layouts";
-
-// Importing core models
+import ProductsController from "./src/controllers/product.controller.js";
+import ejsLayouts from "express-ejs-layouts";
 import path from "path";
+import validationMiddleware from "./src/middlewares/validation.middleware.js";
 
-// Importing internal models
-import ProductController from "./src/controllers/product.controller.js";
-// import validationMiddleware from "./src/middlewares/validation.middleware.js";
-import validationRequest from "./src/middlewares/validation.middleware.js";
+const app = express();
+const productsController = new ProductsController();
 
-// Creating the server
-const server = express();
+app.use(ejsLayouts);
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.set("view engine", "ejs");
+app.set("views", path.join(path.resolve(), "src", "views"));
 
-// Parse form data
-server.use(express.urlencoded({ extended: true }));
+app.get("/", productsController.getProducts);
+app.get("/add-product", productsController.getAddProduct);
 
-// setup view engine settings
-server.set("view engine", "ejs");
-// Informing the view enjine where our views reside in this it's in views and path to the folders
-server.set("views", path.join(path.resolve(), "src", "views"));
+app.get("/update-product/:id", productsController.getUpdateProductView);
 
-// create an instance of ProductController
-const productController = new ProductController();
+app.post("/", validationMiddleware, productsController.postAddProduct);
 
-// Using the middle for layouts
-server.use(expressEjsLayouts);
+app.post("/update-product", productsController.postUpdateProduct);
 
-// Calling the get method
-server.get("/", productController.getProducts);
-server.get("/new", productController.getAddForm);
-server.post("/", validationRequest, productController.addNewProduct);
-server.get(
-    "/update-product",
-    validationRequest,
-    productController.getProductView
-);
-// Serving the static files
-server.use(express.static("src/views"));
-
-// Listening the port
-server.listen(3400);
-console.log("Server is listening on pert 3400");
+app.listen(3000, () => {
+    console.log("Server is running on port 3000");
+});
