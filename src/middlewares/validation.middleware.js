@@ -1,7 +1,7 @@
 import { body, validationResult } from "express-validator";
 export default async function validationRequest(req, res, next) {
     // 1. setup rules for validation
-    console.log(req.body);
+    // console.log(req.body);
     const rules = [
         body("name").notEmpty().withMessage("Name is required"),
         body("price")
@@ -9,11 +9,14 @@ export default async function validationRequest(req, res, next) {
             .withMessage("Price should be a positive value"),
         body("imageUrl").isURL().withMessage("Invalid URL"),
     ];
+
     // 2. Run those rules
     await Promise.all(rules.map((rule) => rule.run(req)));
+
     // 3. Check if there are any errors after running the rules
     let validationErrors = validationResult(req);
-    console.log(validationErrors);
+    // console.log(validationErrors);
+
     // 4. if errors, return the error message
     if (!validationErrors.isEmpty()) {
         return res.render("new-product", {

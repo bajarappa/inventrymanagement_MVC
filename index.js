@@ -31,7 +31,11 @@ server.use(expressEjsLayouts);
 server.get("/", productController.getProducts);
 server.get("/new", productController.getAddForm);
 server.post("/", validationRequest, productController.addNewProduct);
-
+server.get(
+    "/update-product",
+    validationRequest,
+    productController.getProductView
+);
 // Serving the static files
 server.use(express.static("src/views"));
 
