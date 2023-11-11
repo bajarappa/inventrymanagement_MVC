@@ -1,9 +1,16 @@
-const express = require("express");
+import express from "express";
+import ProductController from "./src/controllers/product.controller.js";
 
 const server = express();
 
-server.get("/", (req, res) => {
-    res.send("Welcome to inventry app");
-});
+// create an instance of ProductController
+const productController = new ProductController();
 
-server.listen(3000, () => console.log("Server is listening on port 3000"));
+// Get method
+server.get("/", productController.getProducts);
+
+// Serving the static files
+server.use(express.static("src/views"));
+
+server.listen(3400);
+console.log("Server is listening on pert 3400");
