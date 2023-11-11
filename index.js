@@ -1,5 +1,6 @@
 // Importing external models
 import express from "express";
+import expressEjsLayouts from "express-ejs-layouts";
 
 // Importing core models
 import path from "path";
@@ -17,6 +18,9 @@ server.set("views", path.join(path.resolve(), "src", "views"));
 
 // create an instance of ProductController
 const productController = new ProductController();
+
+// Using the middle for layouts
+server.use(expressEjsLayouts);
 
 // Calling the get method
 server.get("/", productController.getProducts);
