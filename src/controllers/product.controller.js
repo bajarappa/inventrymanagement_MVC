@@ -13,7 +13,9 @@ class ProductsController {
     }
 
     postAddProduct(req, res, next) {
-        ProductModel.add(req.body);
+        const { name, desc, price } = req.body;
+        const imageUrl = `images/${req.file.filename}`;
+        ProductModel.add(name, desc, price, imageUrl);
         var products = ProductModel.getAll();
         res.render("index", { products });
     }
@@ -35,7 +37,10 @@ class ProductsController {
     }
 
     postUpdateProduct(req, res) {
-        ProductModel.update(req.body);
+        const { id, name, desc, price } = req.body;
+        const imageUrl = `/images/${req.file.filename}`;
+        const productObj = new ProductModel(id, name, desc, price, imageUrl);
+        ProductModel.update(productObj);
         var products = ProductModel.getAll();
         res.render("index", { products });
     }
