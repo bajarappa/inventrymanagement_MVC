@@ -20,6 +20,7 @@ export default class UserController {
         if (!user) {
             res.render("login", { errorMessage: "Inavalid credentials" });
         }
+        req.session.userEmail = email;
         let products = ProductModel.getAll();
         res.render("index", { products });
     }
