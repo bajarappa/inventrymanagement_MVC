@@ -30,8 +30,9 @@ app.set("views", path.join(path.resolve(), "src", "views"));
 
 app.get("/register", usersController.getRegister);
 app.get("/login", usersController.getLogin);
-app.post("/register", usersController.postRegister);
 app.post("/login", usersController.postLogin);
+app.get("/logout", usersController.logout);
+app.post("/register", usersController.postRegister);
 app.get("/", auth, productsController.getProducts);
 app.get("/add-product", auth, productsController.getAddProduct);
 
