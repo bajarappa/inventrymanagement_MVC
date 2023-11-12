@@ -4,11 +4,13 @@ import ejsLayouts from "express-ejs-layouts";
 import path from "path";
 import validationMiddleware from "./src/middlewares/validation.middleware.js";
 import { uploadFile } from "./src/middlewares/file-upload.middleware.js";
+import UserController from "./src/controllers/user.controller.js";
 
 const app = express();
 
 app.use(express.static("public"));
 const productsController = new ProductsController();
+const usersController = new UserController();
 
 app.use(ejsLayouts);
 app.use(express.json());
@@ -16,6 +18,10 @@ app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.set("views", path.join(path.resolve(), "src", "views"));
 
+app.get("/register", usersController.getRegister);
+app.get("/login", usersController.getLogin);
+app.post("/register", usersController.postRegister);
+app.post("/login", usersController.postLogin);
 app.get("/", productsController.getProducts);
 app.get("/add-product", productsController.getAddProduct);
 
